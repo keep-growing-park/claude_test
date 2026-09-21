@@ -381,20 +381,20 @@
     <p class="lead">두 친구의 대화를 먼저 살펴봅시다. 우리는 이미 일상에서 "회귀적으로" 생각하고 있었을지도 몰라요.</p>
 
     <div class="chat">
-      <div class="bubble you">이번에 빌린 판타지 소설 1권, 300쪽쯤 됐는데 3시간 만에 다 읽었어!</div>
-      <div class="bubble me">오, 꽤 빨리 읽었네. 그렇게 재밌었어?</div>
-      <div class="bubble you">완전. 근데 2권은 450쪽이나 되더라고. 이것도 다 읽으려면 얼마나 걸릴까?</div>
-      <div class="bubble me">쪽수가 더 많으니까 3시간보다는 오래 걸리지 않을까?</div>
+      <div class="bubble you">어제 그 무협 웹소설 정주행했는데 50화까지 보는 데 3시간 좀 안 걸렸어.</div>
+      <div class="bubble me">오 꽤 봤네. 오늘도 이어서 볼 거야?</div>
+      <div class="bubble you">어. 근데 오늘은 80화까지 볼 건데, 그럼 시간이 얼마나 더 걸릴까?</div>
+      <div class="bubble me">화수가 더 많으니까 오늘이 어제보다는 오래 걸리지 않을까?</div>
     </div>
 
-    <p>친구는 <b>쪽수</b>가 늘어나면 <b>독서 시간</b>도 늘어날 것이라 예측했습니다. 이렇게 두 속성 사이에 <b>선 모양의 관계</b>가 있다고 가정하고, 데이터를 가장 잘 대표하는 선을 찾는 분석 방법을 교과서는 다음과 같이 정의합니다.</p>
+    <p>친구는 <b>화수</b>가 늘어나면 <b>정주행 시간</b>도 늘어날 것이라 예측했습니다. 이렇게 두 속성 사이에 <b>선 모양의 관계</b>가 있다고 가정하고, 데이터를 가장 잘 대표하는 선을 찾는 분석 방법을 교과서는 다음과 같이 정의합니다.</p>
 
     <div class="tbquote">
       <div class="h"><span>📖 교과서 원문</span><span class="src">『데이터 과학』 119쪽</span></div>
       <p>"선형 회귀는 두 가지 이상의 속성 사이에 선 모양의 관계가 있다고 가정하고 데이터를 가장 잘 대표하는 선을 찾는 분석 방법이다."</p>
     </div>
 
-    <p>이때 예측하려는 값(독서 시간)을 <b>종속 변수</b>, 예측에 사용하는 값(쪽수)을 <b>독립 변수</b>라고 하며, 이 둘의 관계를 가장 잘 나타내는 선을 <b>회귀선</b>이라 부릅니다. 독립 변수가 하나뿐인 선형 회귀는 <b>단순 선형 회귀</b>라고 합니다.</p>
+    <p>이때 예측하려는 값(정주행 시간)을 <b>종속 변수</b>, 예측에 사용하는 값(화수)을 <b>독립 변수</b>라고 하며, 이 둘의 관계를 가장 잘 나타내는 선을 <b>회귀선</b>이라 부릅니다. 독립 변수가 하나뿐인 선형 회귀는 <b>단순 선형 회귀</b>라고 합니다.</p>
 
     <div class="formula-card">
       <div class="formula-big">
@@ -429,31 +429,31 @@
   <section id="lab">
     <div class="kicker">02 · 실험 · 교과서 120쪽 활동</div>
     <h2>오차를 비교하며 최적의 회귀선 찾기</h2>
-    <p class="lead">소설책 쪽수(x)에 따른 독서 시간(y) 데이터 5개가 있습니다. 아래에서 가중치 a와 편향 b를 직접 조절하며, 어떤 직선이 데이터를 가장 잘 대표하는지 찾아보세요. 교과서 120쪽의 "회귀선 ❶❷ 비교하기" 활동과 같은 데이터입니다.</p>
+    <p class="lead">무협 웹소설을 정주행한 화수(x)와 정주행 시간(y) 데이터 5개가 있습니다. 아래에서 가중치 a와 편향 b를 직접 조절하며, 어떤 직선이 데이터를 가장 잘 대표하는지 찾아보세요. 교과서 120쪽의 "회귀선 ❶❷ 비교하기" 활동과 같은 방식입니다.</p>
 
     <div class="lab">
       <div class="presets">
-        <button class="btn" id="preset1" onclick="setPreset(0.2,50,'preset1')">회귀선 ❶ (a=0.2, b=50)</button>
-        <button class="btn" id="preset2" onclick="setPreset(0.3,40,'preset2')">회귀선 ❷ (a=0.3, b=40)</button>
+        <button class="btn" id="preset1" onclick="setPreset(1.5,100,'preset1')">회귀선 ❶ (a=1.5, b=100)</button>
+        <button class="btn" id="preset2" onclick="setPreset(2.5,50,'preset2')">회귀선 ❷ (a=2.5, b=50)</button>
         <button class="btn warm ghost" id="bestBtn" onclick="toggleBest()">🏆 최적의 회귀선 비교해 보기</button>
       </div>
 
       <div class="lab-grid">
         <div>
-          <svg id="plot" viewBox="0 0 460 320" role="img" aria-label="쪽수와 독서 시간의 산점도와 회귀선"></svg>
+          <svg id="plot" viewBox="0 0 460 320" role="img" aria-label="화수와 정주행 시간의 산점도와 회귀선"></svg>
         </div>
         <div>
           <div class="slider-row">
-            <div class="row-top"><b>가중치 a (기울기)</b><span class="val" id="aVal">0.20</span></div>
-            <input type="range" id="aSlider" min="0" max="0.6" step="0.01" value="0.2">
+            <div class="row-top"><b>가중치 a (기울기)</b><span class="val" id="aVal">1.50</span></div>
+            <input type="range" id="aSlider" min="0" max="5" step="0.01" value="1.5">
           </div>
           <div class="slider-row">
-            <div class="row-top"><b>편향 b (절편)</b><span class="val" id="bVal">50</span></div>
-            <input type="range" id="bSlider" min="0" max="100" step="1" value="50">
+            <div class="row-top"><b>편향 b (절편)</b><span class="val" id="bVal">100</span></div>
+            <input type="range" id="bSlider" min="0" max="150" step="1" value="100">
           </div>
 
           <div class="readout">
-            <span class="eq">y =</span> <span class="a-val" id="eqA">0.20</span><span class="eq"> x +</span> <span class="b-val" id="eqB">50</span>
+            <span class="eq">y =</span> <span class="a-val" id="eqA">1.50</span><span class="eq"> x +</span> <span class="b-val" id="eqB">100</span>
           </div>
 
           <div class="mse-panel">
@@ -462,7 +462,7 @@
           </div>
 
           <table class="err-table" id="errTable">
-            <thead><tr><th>x (쪽수)</th><th>실제 y</th><th>예측 y</th><th>|오차|</th></tr></thead>
+            <thead><tr><th>x (화수)</th><th>실제 y</th><th>예측 y</th><th>|오차|</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
@@ -512,13 +512,13 @@
     <details class="card">
       <summary>🖐️ 손으로 확인해보기 — 공식에 값 대입하기 <span style="font-weight:400; color:var(--ink-faint); font-size:12.5px;">(교과서 121쪽과 같은 활동, 선택)</span></summary>
       <div class="card-body">
-        <p>시간이 부족하면 직접 계산하지 않아도 됩니다. 아래 단계를 하나씩 눌러 과정만 확인해도 충분합니다. <a href="#lab">실험</a> 절에서 쓴 데이터 (150,70), (200,100), (270,125), (320,155), (380,170)를 그대로 공식에 넣어 계산해 봅니다.</p>
+        <p>시간이 부족하면 직접 계산하지 않아도 됩니다. 아래 단계를 하나씩 눌러 과정만 확인해도 충분합니다. <a href="#lab">실험</a> 절에서 쓴 데이터 (20,70), (35,120), (50,165), (65,210), (80,255)를 그대로 공식에 넣어 계산해 봅니다.</p>
 
         <details class="card nested">
           <summary>1단계 — 평균 구하기</summary>
           <div class="card-body">
-            <p>x̄ = (150+200+270+320+380) ÷ 5 = <b class="num">264</b></p>
-            <p>ȳ = (70+100+125+155+170) ÷ 5 = <b class="num">124</b></p>
+            <p>x̄ = (20+35+50+65+80) ÷ 5 = <b class="num">50</b></p>
+            <p>ȳ = (70+120+165+210+255) ÷ 5 = <b class="num">164</b></p>
           </div>
         </details>
 
@@ -529,11 +529,11 @@
             <table class="err-table">
               <thead><tr><th>x</th><th>y</th><th>x−x̄</th><th>y−ȳ</th><th>(x−x̄)(y−ȳ)</th><th>(x−x̄)²</th></tr></thead>
               <tbody>
-                <tr><td>150</td><td>70</td><td>−114</td><td>−54</td><td>6156</td><td>12996</td></tr>
-                <tr><td>200</td><td>100</td><td>−64</td><td>−24</td><td>1536</td><td>4096</td></tr>
-                <tr><td>270</td><td>125</td><td>6</td><td>1</td><td>6</td><td>36</td></tr>
-                <tr><td>320</td><td>155</td><td>56</td><td>31</td><td>1736</td><td>3136</td></tr>
-                <tr><td>380</td><td>170</td><td>116</td><td>46</td><td>5336</td><td>13456</td></tr>
+                <tr><td>20</td><td>70</td><td>−30</td><td>−94</td><td>2820</td><td>900</td></tr>
+                <tr><td>35</td><td>120</td><td>−15</td><td>−44</td><td>660</td><td>225</td></tr>
+                <tr><td>50</td><td>165</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+                <tr><td>65</td><td>210</td><td>15</td><td>46</td><td>690</td><td>225</td></tr>
+                <tr><td>80</td><td>255</td><td>30</td><td>91</td><td>2730</td><td>900</td></tr>
               </tbody>
             </table>
           </div>
@@ -542,17 +542,17 @@
         <details class="card nested">
           <summary>3단계 — 각 열의 합 구하기</summary>
           <div class="card-body">
-            <p>Σ(x−x̄)(y−ȳ) = 6156+1536+6+1736+5336 = <b class="num">14770</b></p>
-            <p>Σ(x−x̄)² = 12996+4096+36+3136+13456 = <b class="num">33720</b></p>
+            <p>Σ(x−x̄)(y−ȳ) = 2820+660+0+690+2730 = <b class="num">6900</b></p>
+            <p>Σ(x−x̄)² = 900+225+0+225+900 = <b class="num">2250</b></p>
           </div>
         </details>
 
         <details class="card nested">
           <summary>4단계 — a, b 계산하고 확인하기</summary>
           <div class="card-body">
-            <p>a = 14770 ÷ 33720 ≈ <b class="num">0.44</b></p>
-            <p>b = 124 − 0.44 × 264 ≈ <b class="num">8.4</b></p>
-            <p>즉 이 데이터에 가장 잘 맞는 회귀선은 <span class="num">y ≈ 0.44x + 8.4</span> 입니다. <a href="#lab">실험</a> 절에서 <b>🏆 최적의 회귀선 비교해 보기</b> 버튼을 눌렀을 때 그래프에 나온 식과 같은지 확인해 보세요. 버튼 하나가 순식간에 해 준 계산을, 우리는 방금 손으로 따라가 본 것입니다.</p>
+            <p>a = 6900 ÷ 2250 ≈ <b class="num">3.07</b></p>
+            <p>b = 164 − 3.07 × 50 ≈ <b class="num">10.5</b></p>
+            <p>즉 이 데이터에 가장 잘 맞는 회귀선은 <span class="num">y ≈ 3.07x + 10.5</span> 입니다. <a href="#lab">실험</a> 절에서 <b>🏆 최적의 회귀선 비교해 보기</b> 버튼을 눌렀을 때 그래프에 나온 식과 같은지 확인해 보세요. 버튼 하나가 순식간에 해 준 계산을, 우리는 방금 손으로 따라가 본 것입니다.</p>
           </div>
         </details>
       </div>
@@ -573,8 +573,8 @@
             <input type="range" id="gdIter" min="0" max="300" step="1" value="0">
           </div>
           <div class="slider-row">
-            <div class="row-top"><b>학습률</b><span class="val" id="gdLrVal">0.050</span></div>
-            <input type="range" id="gdLr" min="0.001" max="0.11" step="0.001" value="0.05">
+            <div class="row-top"><b>학습률</b><span class="val" id="gdLrVal">0.250</span></div>
+            <input type="range" id="gdLr" min="0.001" max="0.6" step="0.001" value="0.25">
           </div>
           <div class="presets">
             <button class="btn" id="gdStep" type="button">⏭ 한 스텝 학습</button>
@@ -622,11 +622,11 @@
       <li><span class="st">① 샘플 프롬프트 — 그대로 붙여 넣기</span>
         <div class="code-block">
           <div class="code-head">① AI에게 보낼 프롬프트</div>
-          <pre>"독서 시간 회귀선 실험실"이라는 스트림릿 앱을 파일 하나로 만들어 줘.
-소설책 쪽수(x)와 독서 시간(y) 데이터 5개를 코드 안에 직접 넣어 써:
-(150,70), (200,100), (270,125), (320,155), (380,170)
+          <pre>"정주행 시간 회귀선 실험실"이라는 스트림릿 앱을 파일 하나로 만들어 줘.
+웹소설 화수(x)와 정주행 시간(y) 데이터 5개를 코드 안에 직접 넣어 써:
+(20,70), (35,120), (50,165), (65,210), (80,255)
 
-화면에 슬라이더 두 개를 만들어서 가중치 a(0~0.6)와 편향 b(0~100)를
+화면에 슬라이더 두 개를 만들어서 가중치 a(0~5)와 편향 b(0~150)를
 사용자가 바꿀 수 있게 해 줘.
 산점도 위에 사용자가 정한 a, b로 그린 직선을 함께 그려서 보여 줘.
 각 점의 실젯값과 예측값의 차이를 제곱해서 더한 값(오차 제곱합)을
@@ -648,19 +648,19 @@
 <span class="tok-kw">import</span> plotly.express <span class="tok-kw">as</span> px
 <span class="tok-kw">import</span> pandas <span class="tok-kw">as</span> pd
 
-st.title(<span class="tok-str">"독서 시간 회귀선 실험실"</span>)
+st.title(<span class="tok-str">"정주행 시간 회귀선 실험실"</span>)
 
-x = np.array([<span class="tok-cls">150</span>, <span class="tok-cls">200</span>, <span class="tok-cls">270</span>, <span class="tok-cls">320</span>, <span class="tok-cls">380</span>])
-y = np.array([<span class="tok-cls">70</span>, <span class="tok-cls">100</span>, <span class="tok-cls">125</span>, <span class="tok-cls">155</span>, <span class="tok-cls">170</span>])
+x = np.array([<span class="tok-cls">20</span>, <span class="tok-cls">35</span>, <span class="tok-cls">50</span>, <span class="tok-cls">65</span>, <span class="tok-cls">80</span>])
+y = np.array([<span class="tok-cls">70</span>, <span class="tok-cls">120</span>, <span class="tok-cls">165</span>, <span class="tok-cls">210</span>, <span class="tok-cls">255</span>])
 
-a = st.slider(<span class="tok-str">"가중치 a"</span>, <span class="tok-cls">0.0</span>, <span class="tok-cls">0.6</span>, <span class="tok-cls">0.2</span>, <span class="tok-cls">0.01</span>)
-b = st.slider(<span class="tok-str">"편향 b"</span>, <span class="tok-cls">0</span>, <span class="tok-cls">100</span>, <span class="tok-cls">50</span>)
+a = st.slider(<span class="tok-str">"가중치 a"</span>, <span class="tok-cls">0.0</span>, <span class="tok-cls">5.0</span>, <span class="tok-cls">1.5</span>, <span class="tok-cls">0.01</span>)
+b = st.slider(<span class="tok-str">"편향 b"</span>, <span class="tok-cls">0</span>, <span class="tok-cls">150</span>, <span class="tok-cls">100</span>)
 
 pred = a * x + b
 sse = float(np.<span class="tok-fn">sum</span>((y - pred) ** <span class="tok-cls">2</span>))
 
-df = pd.DataFrame({<span class="tok-str">"쪽수"</span>: x, <span class="tok-str">"독서 시간"</span>: y})
-fig = px.scatter(df, x=<span class="tok-str">"쪽수"</span>, y=<span class="tok-str">"독서 시간"</span>)
+df = pd.DataFrame({<span class="tok-str">"화수"</span>: x, <span class="tok-str">"정주행 시간"</span>: y})
+fig = px.scatter(df, x=<span class="tok-str">"화수"</span>, y=<span class="tok-str">"정주행 시간"</span>)
 fig.add_scatter(x=x, y=pred, mode=<span class="tok-str">"lines"</span>, name=<span class="tok-str">"내 회귀선"</span>)
 st.plotly_chart(fig, width=<span class="tok-str">"stretch"</span>)
 
@@ -687,8 +687,8 @@ plotly</pre>
       <li><span class="st">③ 개선 프롬프트 — 교과서 속 두 회귀선과 비교하기</span>
         <div class="code-block">
           <div class="code-head">③ 개선 프롬프트</div>
-          <pre>버튼 두 개를 추가해 줘. 하나는 눌렀을 때 a=0.2, b=50으로,
-다른 하나는 a=0.3, b=40으로 슬라이더 값이 바로 바뀌게 해 줘.
+          <pre>버튼 두 개를 추가해 줘. 하나는 눌렀을 때 a=1.5, b=100으로,
+다른 하나는 a=2.5, b=50으로 슬라이더 값이 바로 바뀌게 해 줘.
 두 경우의 오차 제곱합을 각각 계산해서 어느 쪽이 더 작은지,
 그래서 어느 직선이 더 좋은 예측 모델인지 문장으로 알려 줘.</pre>
         </div>
@@ -755,9 +755,9 @@ plotly</pre>
 <script>
 (function(){
   var data = [
-    {x:150,y:70},{x:200,y:100},{x:270,y:125},{x:320,y:155},{x:380,y:170}
+    {x:20,y:70},{x:35,y:120},{x:50,y:165},{x:65,y:210},{x:80,y:255}
   ];
-  var xDomain=[100,420], yDomain=[0,220];
+  var xDomain=[0,100], yDomain=[0,300];
   var pad={left:46,right:14,top:14,bottom:34};
   var vbW=460, vbH=320;
   var plotW = vbW-pad.left-pad.right, plotH = vbH-pad.top-pad.bottom;
@@ -802,21 +802,21 @@ plotly</pre>
 
   function buildStatic(){
     axisLayer = el('g',{});
-    var yTicks=[0,50,100,150,200];
+    var yTicks=[0,50,100,150,200,250,300];
     yTicks.forEach(function(t){
       axisLayer.appendChild(el('line',{x1:pad.left,x2:vbW-pad.right,y1:sy(t),y2:sy(t),stroke:'var(--grid-line)','stroke-width':1}));
       var lbl = el('text',{x:pad.left-8, y:sy(t)+4, 'text-anchor':'end','font-size':9,'font-family':'IBM Plex Mono, monospace', fill:'var(--ink-faint)'});
       lbl.textContent = t;
       axisLayer.appendChild(lbl);
     });
-    var xTicks=[100,150,200,250,300,350,400];
+    var xTicks=[0,20,40,60,80,100];
     xTicks.forEach(function(t){
       var lbl = el('text',{x:sx(t), y: vbH-pad.bottom+16, 'text-anchor':'middle','font-size':9,'font-family':'IBM Plex Mono, monospace', fill:'var(--ink-faint)'});
       lbl.textContent = t;
       axisLayer.appendChild(lbl);
     });
     var xl = el('text',{x:vbW/2, y:vbH-4, 'text-anchor':'middle','font-size':10,'font-family':'IBM Plex Sans KR, sans-serif', fill:'var(--ink-soft)'});
-    xl.textContent='쪽수 (x)';
+    xl.textContent='화수 (x)';
     axisLayer.appendChild(xl);
     var ylab = el('text',{x:12, y:pad.top+6, 'font-size':10,'font-family':'IBM Plex Sans KR, sans-serif', fill:'var(--ink-soft)'});
     ylab.textContent='분';
@@ -947,13 +947,13 @@ plotly</pre>
     if(!gdPlot) return;
 
     var gAxes = el('g',{});
-    [0,50,100,150,200].forEach(function(t){
+    [0,50,100,150,200,250,300].forEach(function(t){
       gAxes.appendChild(el('line',{x1:pad.left,x2:vbW-pad.right,y1:sy(t),y2:sy(t),stroke:'var(--grid-line)','stroke-width':1}));
       var lbl = el('text',{x:pad.left-8, y:sy(t)+4, 'text-anchor':'end','font-size':9,'font-family':'IBM Plex Mono, monospace', fill:'var(--ink-faint)'});
       lbl.textContent = t;
       gAxes.appendChild(lbl);
     });
-    [100,150,200,250,300,350,400].forEach(function(t){
+    [0,20,40,60,80,100].forEach(function(t){
       var lbl = el('text',{x:sx(t), y: vbH-pad.bottom+16, 'text-anchor':'middle','font-size':9,'font-family':'IBM Plex Mono, monospace', fill:'var(--ink-faint)'});
       lbl.textContent = t;
       gAxes.appendChild(lbl);
@@ -1001,13 +1001,13 @@ plotly</pre>
 
     var cvbW=460, cvbH=150, cpad={left:46,right:14,top:12,bottom:26};
     var cplotW=cvbW-cpad.left-cpad.right, cplotH=cvbH-cpad.top-cpad.bottom;
-    var cxMax=300, cyMax=17000;
+    var cxMax=300, cyMax=32000;
     function csx(i){ return cpad.left + (i/Math.max(1,cxMax))*cplotW; }
     function csy(v){ var vv=Math.max(0,Math.min(cyMax, isFinite(v)?v:cyMax)); return cpad.top + cplotH - (vv/cyMax)*cplotH; }
 
     var curveSvg = document.getElementById('gdCurve');
     var cAxes = el('g',{});
-    [0,4000,8000,12000,16000].forEach(function(v){
+    [0,8000,16000,24000,32000].forEach(function(v){
       cAxes.appendChild(el('line',{x1:cpad.left,x2:cvbW-cpad.right,y1:csy(v),y2:csy(v),stroke:'var(--grid-line)','stroke-width':1}));
       var lbl=el('text',{x:cpad.left-6,y:csy(v)+3,'text-anchor':'end','font-size':8,'font-family':'IBM Plex Mono, monospace',fill:'var(--ink-faint)'});
       lbl.textContent = v;
@@ -1090,7 +1090,7 @@ plotly</pre>
       var lr = parseFloat(gdLrInput.value);
       var tolerance = 0.3;
       var CONVERGE_CAP = parseInt(gdIterInput.max,10);
-      var target = Math.min(CONVERGE_CAP, Math.max(20, Math.ceil(7/lr)));
+      var target = Math.min(CONVERGE_CAP, Math.max(20, Math.ceil(65/lr)));
       var stepsPerTick = Math.max(1, Math.round(target/70));
       playing=true; btn.textContent='⏸ 정지';
       var cur=0;
@@ -1108,7 +1108,7 @@ plotly</pre>
     document.getElementById('gdReset').addEventListener('click', function(){
       stopPlaying();
       gdIterInput.value=0;
-      gdLrInput.value=0.05;
+      gdLrInput.value=0.25;
       renderGd();
     });
 
