@@ -1089,7 +1089,7 @@ plotly</pre>
       if(playing){ stopPlaying(); return; }
       var lr = parseFloat(gdLrInput.value);
       var tolerance = 0.3;
-      var CONVERGE_CAP = 8000;
+      var CONVERGE_CAP = parseInt(gdIterInput.max,10);
       var target = Math.min(CONVERGE_CAP, Math.max(20, Math.ceil(7/lr)));
       var stepsPerTick = Math.max(1, Math.round(target/70));
       playing=true; btn.textContent='⏸ 정지';
