@@ -558,45 +558,41 @@
       </div>
     </details>
 
-    <details class="card">
-      <summary>🖐️ 손으로 확인해보기 — 경사 하강법 흉내내기 <span style="font-weight:400; color:var(--ink-faint); font-size:12.5px;">(선택)</span></summary>
-      <div class="card-body">
-        <p>통계적 회귀 모델은 공식으로 한 번에 답을 구했습니다. 기계학습은 대신 "일단 짐작하고, 오차를 보고, 조금씩 고쳐나가는" 방식으로 같은 답에 다다릅니다. 같은 데이터로 그 과정을 따라가 봅시다.</p>
+    <div class="lab" id="gdLab">
+      <div class="kicker" style="margin-bottom:6px;">🎛️ 경사 하강법 시뮬레이터 (선택)</div>
+      <p style="font-size:14px; color:var(--ink-soft); margin:0 0 16px;">통계적 회귀 모델은 공식으로 답을 한 번에 구합니다. 기계학습은 대신 <b>학습 횟수</b>만큼 조금씩 값을 고쳐 나갑니다. 같은 데이터로 실제 경사 하강법을 돌려, 학습 횟수와 학습률을 바꿔가며 오차가 줄어드는 모습을 직접 확인해 보세요.</p>
 
-        <details class="card nested">
-          <summary>1단계 — 아무렇게나 짐작하기 (a=0, b=0)</summary>
-          <div class="card-body">
-            <p>독립 변수를 전혀 쓰지 않고 항상 0으로만 예측한다고 해봅시다. 실젯값과 한참 떨어져 있겠죠.</p>
-            <p>오차 제곱합 = <b class="num">83450</b> — 매우 큽니다.</p>
+      <div class="lab-grid">
+        <div>
+          <svg id="gdPlot" viewBox="0 0 460 320" role="img" aria-label="경사 하강법으로 찾아가는 회귀선"></svg>
+          <svg id="gdCurve" viewBox="0 0 460 150" role="img" aria-label="학습 횟수에 따른 평균제곱오차 변화 그래프" style="margin-top:12px;"></svg>
+        </div>
+        <div>
+          <div class="slider-row">
+            <div class="row-top"><b>학습 횟수</b><span class="val" id="gdIterVal">0회</span></div>
+            <input type="range" id="gdIter" min="0" max="300" step="1" value="0">
           </div>
-        </details>
+          <div class="slider-row">
+            <div class="row-top"><b>학습률</b><span class="val" id="gdLrVal">0.10</span></div>
+            <input type="range" id="gdLr" min="0.01" max="0.30" step="0.01" value="0.10">
+          </div>
+          <div class="presets">
+            <button class="btn" id="gdPlay" type="button">▶ 자동 재생</button>
+            <button class="btn ghost" id="gdReset" type="button">처음부터</button>
+          </div>
 
-        <details class="card nested">
-          <summary>2단계 — 오차가 크니 크게 보정하기 (b: 0 → 100)</summary>
-          <div class="card-body">
-            <p>예측값이 실젯값보다 전체적으로 한참 낮으니, 편향을 큰 폭으로 끌어올립니다.</p>
-            <p>오차 제곱합 = <b class="num">9450</b> — 훨씬 줄었지만 아직 큽니다.</p>
+          <div class="readout">
+            <span class="eq">y =</span> <span class="a-val" id="gdEqA">0.00</span><span class="eq"> x +</span> <span class="b-val" id="gdEqB">0.0</span>
           </div>
-        </details>
 
-        <details class="card nested">
-          <summary>3단계 — 오차가 줄었으니 조금씩 보정하기</summary>
-          <div class="card-body">
-            <p>a=0.2, b=50 (<a href="#lab">실험</a> 절의 회귀선 ❶) → 오차 제곱합 <b class="num">4258</b></p>
-            <p>a=0.3, b=40 (회귀선 ❷) → 오차 제곱합 <b class="num">858</b></p>
-            <p>오차가 작아질수록 한 번에 보정하는 폭도 점점 작아집니다.</p>
+          <div class="mse-panel">
+            <div class="mse-tile"><div class="l">평균제곱오차</div><div class="v num" id="gdMse">–</div></div>
+            <div class="mse-tile"><div class="l">최적값과의 차이</div><div class="v num" id="gdGap">–</div></div>
           </div>
-        </details>
-
-        <details class="card nested">
-          <summary>4단계 — 더 나아지지 않을 때까지 반복하기</summary>
-          <div class="card-body">
-            <p>같은 방식으로 계속 조금씩 고치다 보면 <span class="num">a≈0.44, b≈8.4</span> 근처에서 오차 제곱합이 <b class="num">약 100</b>까지 줄어들어 더는 나아지지 않습니다.</p>
-            <p>바로 위에서 통계적 회귀 모델이 공식으로 <b>한 번에</b> 구한 값과 거의 같습니다. 가는 길은 다르지만 결국 같은 답에 도착한다는 것, 이것이 두 회귀 모델의 관계입니다.</p>
-          </div>
-        </details>
+          <p style="font-size:12.5px; color:var(--ink-faint); margin-top:12px;">💡 학습률을 너무 크게 하면 오차가 줄어들다가 오히려 다시 커질 수 있습니다 — 직접 확인해 보세요.</p>
+        </div>
       </div>
-    </details>
+    </div>
 
     <div class="tbquote">
       <div class="h"><span>📖 교과서 원문</span><span class="src">『데이터 과학』 124쪽</span></div>
@@ -944,6 +940,161 @@ plotly</pre>
       document.getElementById('saveHint').textContent = '저장되었습니다 (이 브라우저에만 보관).';
     });
   }catch(e){}
+
+  (function(){
+    var gdPlot = document.getElementById('gdPlot');
+    if(!gdPlot) return;
+
+    var gAxes = el('g',{});
+    [0,50,100,150,200].forEach(function(t){
+      gAxes.appendChild(el('line',{x1:pad.left,x2:vbW-pad.right,y1:sy(t),y2:sy(t),stroke:'var(--grid-line)','stroke-width':1}));
+      var lbl = el('text',{x:pad.left-8, y:sy(t)+4, 'text-anchor':'end','font-size':9,'font-family':'IBM Plex Mono, monospace', fill:'var(--ink-faint)'});
+      lbl.textContent = t;
+      gAxes.appendChild(lbl);
+    });
+    [100,150,200,250,300,350,400].forEach(function(t){
+      var lbl = el('text',{x:sx(t), y: vbH-pad.bottom+16, 'text-anchor':'middle','font-size':9,'font-family':'IBM Plex Mono, monospace', fill:'var(--ink-faint)'});
+      lbl.textContent = t;
+      gAxes.appendChild(lbl);
+    });
+    gdPlot.appendChild(gAxes);
+    var gdDataLayer = el('g',{});
+    data.forEach(function(p){
+      gdDataLayer.appendChild(el('circle',{cx:sx(p.x), cy:sy(p.y), r:5, fill:'var(--ink)', 'fill-opacity':0.78}));
+    });
+    gdPlot.appendChild(gdDataLayer);
+    var gdLineLayer = el('g',{});
+    gdPlot.appendChild(gdLineLayer);
+
+    var optimal = ols(data);
+    var optMse = (function(){
+      var s=0; data.forEach(function(p){ var e=p.y-(optimal.a*p.x+optimal.b); s+=e*e; });
+      return s/data.length;
+    })();
+
+    function runGD(iterations, lr){
+      var n = data.length;
+      var xs = data.map(function(p){ return p.x/100; });
+      var ys = data.map(function(p){ return p.y; });
+      var aS=0, bS=0;
+      var history = [ys.reduce(function(s,y){ return s+y*y; },0)/n];
+      for(var i=0;i<iterations;i++){
+        var daS=0, dbS=0;
+        for(var j=0;j<n;j++){
+          var pred = aS*xs[j]+bS;
+          var err = pred-ys[j];
+          daS += err*xs[j];
+          dbS += err;
+        }
+        aS -= lr*(2/n)*daS;
+        bS -= lr*(2/n)*dbS;
+        var mse=0;
+        for(var k=0;k<n;k++){
+          var e2 = ys[k]-(aS*xs[k]+bS);
+          mse += e2*e2;
+        }
+        history.push(mse/n);
+      }
+      return { a: aS/100, b: bS, mse: history[history.length-1], history: history };
+    }
+
+    var cvbW=460, cvbH=150, cpad={left:46,right:14,top:12,bottom:26};
+    var cplotW=cvbW-cpad.left-cpad.right, cplotH=cvbH-cpad.top-cpad.bottom;
+    var cxMax=300, cyMax=17000;
+    function csx(i){ return cpad.left + (i/cxMax)*cplotW; }
+    function csy(v){ var vv=Math.max(0,Math.min(cyMax, isFinite(v)?v:cyMax)); return cpad.top + cplotH - (vv/cyMax)*cplotH; }
+
+    var curveSvg = document.getElementById('gdCurve');
+    var cAxes = el('g',{});
+    [0,4000,8000,12000,16000].forEach(function(v){
+      cAxes.appendChild(el('line',{x1:cpad.left,x2:cvbW-cpad.right,y1:csy(v),y2:csy(v),stroke:'var(--grid-line)','stroke-width':1}));
+      var lbl=el('text',{x:cpad.left-6,y:csy(v)+3,'text-anchor':'end','font-size':8,'font-family':'IBM Plex Mono, monospace',fill:'var(--ink-faint)'});
+      lbl.textContent = v;
+      cAxes.appendChild(lbl);
+    });
+    var cxl=el('text',{x:cvbW/2,y:cvbH-4,'text-anchor':'middle','font-size':9,'font-family':'IBM Plex Sans KR, sans-serif',fill:'var(--ink-soft)'});
+    cxl.textContent='학습 횟수';
+    cAxes.appendChild(cxl);
+    var cyl=el('text',{x:10,y:cpad.top+6,'font-size':9,'font-family':'IBM Plex Sans KR, sans-serif',fill:'var(--ink-soft)'});
+    cyl.textContent='MSE';
+    cAxes.appendChild(cyl);
+    curveSvg.appendChild(cAxes);
+    var curveLine = el('polyline',{fill:'none', stroke:'var(--accent)', 'stroke-width':2});
+    curveSvg.appendChild(curveLine);
+    var curveDot = el('circle',{r:4, fill:'var(--accent-warm)'});
+    curveSvg.appendChild(curveDot);
+
+    function renderGdCurve(history){
+      var pts = history.map(function(v,i){ return csx(i)+','+csy(v); }).join(' ');
+      curveLine.setAttribute('points', pts);
+      var lastI = history.length-1;
+      curveDot.setAttribute('cx', csx(lastI));
+      curveDot.setAttribute('cy', csy(history[lastI]));
+    }
+
+    var gdIterInput = document.getElementById('gdIter');
+    var gdLrInput = document.getElementById('gdLr');
+
+    function renderGd(){
+      var iterations = parseInt(gdIterInput.value,10);
+      var lr = parseFloat(gdLrInput.value);
+      document.getElementById('gdIterVal').textContent = iterations+'회';
+      document.getElementById('gdLrVal').textContent = lr.toFixed(2);
+
+      var result = runGD(iterations, lr);
+      var safeA = isFinite(result.a) ? result.a : 0;
+      var safeB = isFinite(result.b) ? result.b : 0;
+      document.getElementById('gdEqA').textContent = safeA.toFixed(3);
+      document.getElementById('gdEqB').textContent = safeB.toFixed(1);
+
+      while(gdLineLayer.firstChild) gdLineLayer.removeChild(gdLineLayer.firstChild);
+      var y0=safeA*xDomain[0]+safeB, y1=safeA*xDomain[1]+safeB;
+      var clip = (isFinite(y0)&&isFinite(y1)) ? liangBarsky(xDomain[0],y0,xDomain[1],y1, xDomain[0],yDomain[0],xDomain[1],yDomain[1]) : null;
+      if(clip){
+        gdLineLayer.appendChild(el('line',{
+          x1:sx(clip[0]), y1:sy(clip[1]), x2:sx(clip[2]), y2:sy(clip[3]),
+          stroke:'var(--accent-warm)', 'stroke-width':2.5, 'stroke-linecap':'round'
+        }));
+      }
+
+      var m = result.mse;
+      document.getElementById('gdMse').textContent = isFinite(m) ? m.toFixed(1) : '발산';
+      document.getElementById('gdGap').textContent = isFinite(m) ? ('+'+Math.max(0,m-optMse).toFixed(1)) : '—';
+
+      renderGdCurve(result.history);
+    }
+
+    gdIterInput.addEventListener('input', renderGd);
+    gdLrInput.addEventListener('input', renderGd);
+
+    var playing=false, playTimer=null;
+    document.getElementById('gdPlay').addEventListener('click', function(){
+      var btn = this;
+      if(playing){
+        clearInterval(playTimer); playing=false; btn.textContent='▶ 자동 재생'; return;
+      }
+      var target = parseInt(gdIterInput.value,10) || 100;
+      if(target===0) target=100;
+      playing=true; btn.textContent='⏸ 정지';
+      gdIterInput.value=0;
+      var cur=0;
+      playTimer = setInterval(function(){
+        cur += Math.max(1, Math.round(target/60));
+        if(cur>=target){ cur=target; clearInterval(playTimer); playing=false; btn.textContent='▶ 자동 재생'; }
+        gdIterInput.value=cur;
+        renderGd();
+      }, 30);
+    });
+
+    document.getElementById('gdReset').addEventListener('click', function(){
+      if(playing){ clearInterval(playTimer); playing=false; document.getElementById('gdPlay').textContent='▶ 자동 재생'; }
+      gdIterInput.value=0;
+      gdLrInput.value=0.10;
+      renderGd();
+    });
+
+    renderGd();
+  })();
 })();
 </script>
 </body>
