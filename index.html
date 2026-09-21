@@ -196,6 +196,8 @@
   details.card[open] summary::after{ content:'–'; }
   details.card .card-body{ padding-bottom:16px; color:var(--ink-soft); font-size:14.5px; }
   details.card .card-body p{ margin:0 0 10px; }
+  details.card.nested{ box-shadow:none; background:var(--bg); margin-block:10px; }
+  details.card.nested summary{ font-size:14px; padding-block:10px; }
 
   .lab{
     background:var(--surface); border:1px solid var(--line-b); border-radius:var(--radius);
@@ -506,6 +508,55 @@
         <p style="font-size:12.5px; color:var(--ink-faint);">평균제곱오차(MSE)가 최소가 되는 지점을 향해 항아리 모양의 그래프를 따라 내려갑니다. (124~125쪽)</p>
       </div>
     </div>
+
+    <details class="card">
+      <summary>🖐️ 손으로 확인해보기 — 공식에 값 대입하기 <span style="font-weight:400; color:var(--ink-faint); font-size:12.5px;">(교과서 121쪽과 같은 활동, 선택)</span></summary>
+      <div class="card-body">
+        <p>시간이 부족하면 직접 계산하지 않아도 됩니다. 아래 단계를 하나씩 눌러 과정만 확인해도 충분합니다. <a href="#lab">실험</a> 절에서 쓴 데이터 (150,70), (200,100), (270,125), (320,155), (380,170)를 그대로 공식에 넣어 계산해 봅니다.</p>
+
+        <details class="card nested">
+          <summary>1단계 — 평균 구하기</summary>
+          <div class="card-body">
+            <p>x̄ = (150+200+270+320+380) ÷ 5 = <b class="num">264</b></p>
+            <p>ȳ = (70+100+125+155+170) ÷ 5 = <b class="num">124</b></p>
+          </div>
+        </details>
+
+        <details class="card nested">
+          <summary>2단계 — 편차와 편차의 곱 구하기</summary>
+          <div class="card-body">
+            <p>각 점에서 <span class="num">x−x̄</span>와 <span class="num">y−ȳ</span>를 구하고, 둘을 곱합니다.</p>
+            <table class="err-table">
+              <thead><tr><th>x</th><th>y</th><th>x−x̄</th><th>y−ȳ</th><th>(x−x̄)(y−ȳ)</th><th>(x−x̄)²</th></tr></thead>
+              <tbody>
+                <tr><td>150</td><td>70</td><td>−114</td><td>−54</td><td>6156</td><td>12996</td></tr>
+                <tr><td>200</td><td>100</td><td>−64</td><td>−24</td><td>1536</td><td>4096</td></tr>
+                <tr><td>270</td><td>125</td><td>6</td><td>1</td><td>6</td><td>36</td></tr>
+                <tr><td>320</td><td>155</td><td>56</td><td>31</td><td>1736</td><td>3136</td></tr>
+                <tr><td>380</td><td>170</td><td>116</td><td>46</td><td>5336</td><td>13456</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+        <details class="card nested">
+          <summary>3단계 — 각 열의 합 구하기</summary>
+          <div class="card-body">
+            <p>Σ(x−x̄)(y−ȳ) = 6156+1536+6+1736+5336 = <b class="num">14770</b></p>
+            <p>Σ(x−x̄)² = 12996+4096+36+3136+13456 = <b class="num">33720</b></p>
+          </div>
+        </details>
+
+        <details class="card nested">
+          <summary>4단계 — a, b 계산하고 확인하기</summary>
+          <div class="card-body">
+            <p>a = 14770 ÷ 33720 ≈ <b class="num">0.44</b></p>
+            <p>b = 124 − 0.44 × 264 ≈ <b class="num">8.4</b></p>
+            <p>즉 이 데이터에 가장 잘 맞는 회귀선은 <span class="num">y ≈ 0.44x + 8.4</span> 입니다. <a href="#lab">실험</a> 절에서 <b>🏆 최적의 회귀선 비교해 보기</b> 버튼을 눌렀을 때 그래프에 나온 식과 같은지 확인해 보세요. 버튼 하나가 순식간에 해 준 계산을, 우리는 방금 손으로 따라가 본 것입니다.</p>
+          </div>
+        </details>
+      </div>
+    </details>
 
     <div class="tbquote">
       <div class="h"><span>📖 교과서 원문</span><span class="src">『데이터 과학』 124쪽</span></div>
