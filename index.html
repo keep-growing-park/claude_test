@@ -573,10 +573,11 @@
             <input type="range" id="gdIter" min="0" max="300" step="1" value="0">
           </div>
           <div class="slider-row">
-            <div class="row-top"><b>학습률</b><span class="val" id="gdLrVal">0.10</span></div>
-            <input type="range" id="gdLr" min="0.01" max="0.30" step="0.01" value="0.10">
+            <div class="row-top"><b>학습률</b><span class="val" id="gdLrVal">0.050</span></div>
+            <input type="range" id="gdLr" min="0.001" max="0.12" step="0.001" value="0.05">
           </div>
           <div class="presets">
+            <button class="btn" id="gdStep" type="button">⏭ 한 스텝 학습</button>
             <button class="btn" id="gdPlay" type="button">▶ 자동 재생</button>
             <button class="btn ghost" id="gdReset" type="button">처음부터</button>
           </div>
@@ -1039,7 +1040,7 @@ plotly</pre>
       var iterations = parseInt(gdIterInput.value,10);
       var lr = parseFloat(gdLrInput.value);
       document.getElementById('gdIterVal').textContent = iterations+'회';
-      document.getElementById('gdLrVal').textContent = lr.toFixed(2);
+      document.getElementById('gdLrVal').textContent = lr.toFixed(3);
 
       var result = runGD(iterations, lr);
       var safeA = isFinite(result.a) ? result.a : 0;
@@ -1068,11 +1069,21 @@ plotly</pre>
     gdLrInput.addEventListener('input', renderGd);
 
     var playing=false, playTimer=null;
+    function stopPlaying(){
+      if(playing){ clearInterval(playTimer); playing=false; document.getElementById('gdPlay').textContent='▶ 자동 재생'; }
+    }
+
+    document.getElementById('gdStep').addEventListener('click', function(){
+      stopPlaying();
+      var maxV = parseInt(gdIterInput.max,10);
+      var next = Math.min(maxV, parseInt(gdIterInput.value,10)+1);
+      gdIterInput.value = next;
+      renderGd();
+    });
+
     document.getElementById('gdPlay').addEventListener('click', function(){
       var btn = this;
-      if(playing){
-        clearInterval(playTimer); playing=false; btn.textContent='▶ 자동 재생'; return;
-      }
+      if(playing){ stopPlaying(); return; }
       var target = parseInt(gdIterInput.value,10) || 100;
       if(target===0) target=100;
       playing=true; btn.textContent='⏸ 정지';
@@ -1087,9 +1098,9 @@ plotly</pre>
     });
 
     document.getElementById('gdReset').addEventListener('click', function(){
-      if(playing){ clearInterval(playTimer); playing=false; document.getElementById('gdPlay').textContent='▶ 자동 재생'; }
+      stopPlaying();
       gdIterInput.value=0;
-      gdLrInput.value=0.10;
+      gdLrInput.value=0.05;
       renderGd();
     });
 
