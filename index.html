@@ -558,6 +558,46 @@
       </div>
     </details>
 
+    <details class="card">
+      <summary>🖐️ 손으로 확인해보기 — 경사 하강법 흉내내기 <span style="font-weight:400; color:var(--ink-faint); font-size:12.5px;">(선택)</span></summary>
+      <div class="card-body">
+        <p>통계적 회귀 모델은 공식으로 한 번에 답을 구했습니다. 기계학습은 대신 "일단 짐작하고, 오차를 보고, 조금씩 고쳐나가는" 방식으로 같은 답에 다다릅니다. 같은 데이터로 그 과정을 따라가 봅시다.</p>
+
+        <details class="card nested">
+          <summary>1단계 — 아무렇게나 짐작하기 (a=0, b=0)</summary>
+          <div class="card-body">
+            <p>독립 변수를 전혀 쓰지 않고 항상 0으로만 예측한다고 해봅시다. 실젯값과 한참 떨어져 있겠죠.</p>
+            <p>오차 제곱합 = <b class="num">83450</b> — 매우 큽니다.</p>
+          </div>
+        </details>
+
+        <details class="card nested">
+          <summary>2단계 — 오차가 크니 크게 보정하기 (b: 0 → 100)</summary>
+          <div class="card-body">
+            <p>예측값이 실젯값보다 전체적으로 한참 낮으니, 편향을 큰 폭으로 끌어올립니다.</p>
+            <p>오차 제곱합 = <b class="num">9450</b> — 훨씬 줄었지만 아직 큽니다.</p>
+          </div>
+        </details>
+
+        <details class="card nested">
+          <summary>3단계 — 오차가 줄었으니 조금씩 보정하기</summary>
+          <div class="card-body">
+            <p>a=0.2, b=50 (<a href="#lab">실험</a> 절의 회귀선 ❶) → 오차 제곱합 <b class="num">4258</b></p>
+            <p>a=0.3, b=40 (회귀선 ❷) → 오차 제곱합 <b class="num">858</b></p>
+            <p>오차가 작아질수록 한 번에 보정하는 폭도 점점 작아집니다.</p>
+          </div>
+        </details>
+
+        <details class="card nested">
+          <summary>4단계 — 더 나아지지 않을 때까지 반복하기</summary>
+          <div class="card-body">
+            <p>같은 방식으로 계속 조금씩 고치다 보면 <span class="num">a≈0.44, b≈8.4</span> 근처에서 오차 제곱합이 <b class="num">약 100</b>까지 줄어들어 더는 나아지지 않습니다.</p>
+            <p>바로 위에서 통계적 회귀 모델이 공식으로 <b>한 번에</b> 구한 값과 거의 같습니다. 가는 길은 다르지만 결국 같은 답에 도착한다는 것, 이것이 두 회귀 모델의 관계입니다.</p>
+          </div>
+        </details>
+      </div>
+    </details>
+
     <div class="tbquote">
       <div class="h"><span>📖 교과서 원문</span><span class="src">『데이터 과학』 124쪽</span></div>
       <p>"경사 하강법에서는 '평균제곱오차(MSE: Mean Squared Error)'라는 개념을 사용한다."</p>
