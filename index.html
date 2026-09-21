@@ -205,6 +205,8 @@
   }
   .lab-grid{ display:grid; grid-template-columns: 1.15fr 1fr; gap:24px; align-items:start; }
   @media (max-width:720px){ .lab-grid{ grid-template-columns:1fr; } }
+  figure{ margin:0 0 22px; }
+  figcaption{ font-size:12.5px; color:var(--ink-faint); margin-top:8px; }
   .lab svg{ width:100%; height:auto; display:block; }
   .presets{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
   .btn{
@@ -343,6 +345,7 @@
       <a href="#concept">개념</a>
       <a href="#lab">실험</a>
       <a href="#models">두 모델</a>
+      <a href="#extrapolate">외삽</a>
       <a href="#vibe">바이브 코딩</a>
       <a href="#summary">정리·퀴즈</a>
     </div>
@@ -387,7 +390,28 @@
       <div class="bubble me">화수가 더 많으니까 오늘이 어제보다는 오래 걸리지 않을까?</div>
     </div>
 
-    <p>친구는 <b>화수</b>가 늘어나면 <b>정주행 시간</b>도 늘어날 것이라 예측했습니다. 이렇게 두 속성 사이에 <b>선 모양의 관계</b>가 있다고 가정하고, 데이터를 가장 잘 대표하는 선을 찾는 분석 방법을 교과서는 다음과 같이 정의합니다.</p>
+    <p>친구는 <b>화수</b>가 늘어나면 <b>정주행 시간</b>도 늘어날 것이라 예측했습니다. 그런데 이 예측, 얼마나 믿을 만할까요? 두 속성이 정말 함께 움직이는지, 그 관계가 얼마나 강한지부터 확인해 봅시다.</p>
+
+    <h3 style="font-size:16px;">상관계수 — 관계의 강도를 숫자로</h3>
+    <p>두 속성이 함께 움직이는 정도를 −1부터 +1 사이의 숫자로 나타낸 것을 <b>상관계수(r)</b>라고 합니다. 부호는 방향을(둘 다 늘어나면 양수, 하나가 늘 때 다른 하나가 줄면 음수), 절댓값은 강도를 나타냅니다. 1에 가까울수록 점들이 하나의 직선에 바짝 붙어 늘어섭니다. 슬라이더로 r을 직접 바꿔 보세요.</p>
+
+    <figure class="interactive">
+      <div class="lab" style="margin-block:12px;">
+        <svg id="corrPlot" viewBox="0 0 460 300" role="img" aria-label="상관계수 r에 따라 산점도의 모양이 달라지는 그래프"></svg>
+        <div class="slider-row" style="margin-top:12px;">
+          <div class="row-top"><b>상관계수 r</b><span class="val" id="corrVal">+0.70</span></div>
+          <input type="range" id="corrR" min="-1" max="1" step="0.05" value="0.7">
+        </div>
+        <div class="presets">
+          <button class="btn" onclick="setCorr(0.9)">강한 양의 상관</button>
+          <button class="btn" onclick="setCorr(0)">상관관계 거의 없음</button>
+          <button class="btn" onclick="setCorr(-0.9)">강한 음의 상관</button>
+        </div>
+      </div>
+      <figcaption>속성 A와 속성 B, 두 값 사이의 관계를 나타낸 가상의 산점도입니다. r이 ±1에 가까워질수록 점들이 직선 모양으로 모입니다.</figcaption>
+    </figure>
+
+    <p>상관계수는 관계의 방향과 세기만 알려 줄 뿐, 그 관계를 구체적인 식으로 표현해 주지는 않습니다. 이 관계를 하나의 직선으로 정확하게 나타내는 방법이 바로 지금부터 배울 <b>선형 회귀</b>이고, 교과서는 다음과 같이 정의합니다.</p>
 
     <div class="tbquote">
       <div class="h"><span>📖 교과서 원문</span><span class="src">『데이터 과학』 119쪽</span></div>
@@ -611,6 +635,43 @@
       </table>
     </div>
     <p class="lead" style="font-size:12.5px;">교과서 표 Ⅲ-2 (126~127쪽)의 비교 내용을 제 표현으로 다시 정리했습니다.</p>
+
+    <div class="aside">
+      <strong>회귀선도 결국 하나의 '모델'입니다.</strong> 지하철 노선도를 떠올려 보세요. 실제 지형·거리와는 많이 다르게 그려져 있지만, "어느 역에서 어느 역으로 갈아타야 하는가"라는 목적에는 오히려 그게 더 쓸모 있습니다. 회귀선도 마찬가지입니다. 그날의 우연한 사정, 사람마다 다른 세세한 차이는 다 걷어내고, "화수가 늘면 정주행 시간이 대략 이만큼 늘어난다"는 핵심 관계만 남긴 단순화된 지도입니다. 통계학자 조지 박스는 이를 두고 "모든 모델은 틀렸다. 다만 일부는 쓸모가 있다"는 말을 남겼습니다. 완벽한 예측이 아니라, 목적에 맞게 얼마나 쓸모 있는가가 회귀 모델을 판단하는 기준입니다.
+    </div>
+  </section>
+
+  <section id="extrapolate">
+    <div class="kicker">04 · 학습 기간과 예측의 한계</div>
+    <h2>같은 데이터, 다른 결론 — 학습 기간이 왜 중요할까</h2>
+    <p class="lead">회귀선은 <b>학습에 사용한 데이터의 범위 안에서만</b> 믿을 만합니다. 그 범위를 벗어난 값을 추정하는 것을 <b>외삽</b>이라고 하는데, 같은 데이터라도 어느 기간을 학습에 쓰느냐에 따라 기울기와 예측값이 크게 달라질 수 있습니다. 실제 병역판정검사 자료로 확인해 봅시다.</p>
+
+    <div class="lab">
+      <div class="presets">
+        <button class="btn active" id="exBtnFull" onclick="setExWindow(2008,'exBtnFull')">전체 (2008~2025년)</button>
+        <button class="btn" id="exBtn10" onclick="setExWindow(2016,'exBtn10')">최근 10년 (2016~2025년)</button>
+        <button class="btn" id="exBtn5" onclick="setExWindow(2021,'exBtn5')">최근 5년 (2021~2025년)</button>
+      </div>
+      <div class="lab-grid">
+        <div>
+          <svg id="exPlot" viewBox="0 0 460 320" role="img" aria-label="학습 기간에 따라 달라지는 회귀선과 2030년 예측값"></svg>
+        </div>
+        <div>
+          <div class="readout">
+            <span class="eq">y =</span> <span class="a-val" id="exEqA">–</span><span class="eq"> x</span> <span class="b-val" id="exEqB">–</span>
+          </div>
+          <div class="mse-panel">
+            <div class="mse-tile"><div class="l">학습에 쓴 해</div><div class="v num" id="exN">–</div></div>
+            <div class="mse-tile"><div class="l">2030년 예측</div><div class="v num" id="exPred">–</div></div>
+          </div>
+          <p style="font-size:13px; color:var(--ink-soft); margin-top:14px;" id="exNote">버튼을 눌러 학습 기간을 바꿔 보세요. 회색 점은 이번 학습에서 빠진 해입니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="aside">
+      <strong>세 예측값이 서로 다릅니다.</strong> 전체 18년으로 학습하면 2030년에 <b>41.1%</b>까지 오를 것으로 보이지만, 최근 5년만 보면 기울기가 거의 0에 가까워 <b>34.1%</b>로 거의 늘지 않는다는 정반대의 인상을 줍니다. 어느 쪽이 맞을지는 아무도 단정할 수 없습니다. 그래서 예측값을 말할 때는 숫자만 말하지 말고, <b>어떤 기간의 자료로 만든 예측인지</b>를 반드시 함께 밝혀야 합니다.
+    </div>
   </section>
 
   <section id="vibe">
@@ -703,7 +764,7 @@ plotly</pre>
     </ol>
 
     <div class="aside">
-      <strong>⚠️ 범위 밖의 예측은 조심해서 읽습니다.</strong> 이 회귀선은 2008~2025년 자료로 만든 것입니다. 2030년, 2035년처럼 그 범위를 벗어난 해의 예측값(외삽)은 "지금까지의 추세가 앞으로도 그대로 이어진다"는 가정 위에 서 있을 뿐, 실제 미래를 보장하지 않습니다.
+      <strong>⚠️ 범위 밖의 예측은 조심해서 읽습니다.</strong> <a href="#extrapolate">위에서 확인한 것</a>처럼, 이 앱의 예측도 학습 기간(2008~2025년)을 벗어난 해에는 "지금까지의 추세가 그대로 이어진다"는 가정 위에 서 있을 뿐, 실제 미래를 보장하지 않습니다.
     </div>
   </section>
 
@@ -1119,6 +1180,150 @@ plotly</pre>
     });
 
     renderGd();
+  })();
+
+  (function(){
+    var corrSvg = document.getElementById('corrPlot');
+    if(corrSvg){
+      var N_PTS = 50;
+      var cz1 = [], cz2 = [];
+      function randn(){
+        var u = Math.random() || 1e-9, v = Math.random();
+        return Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v);
+      }
+      for(var i=0;i<N_PTS;i++){ cz1.push(randn()); cz2.push(randn()); }
+
+      var cW=460, cH=300, cpad2={left:30,right:30,top:20,bottom:40};
+      var cPW = cW-cpad2.left-cpad2.right, cPH = cH-cpad2.top-cpad2.bottom;
+      var Z_RANGE = 3.2;
+      function czx(v){ return cpad2.left + (v+Z_RANGE)/(2*Z_RANGE)*cPW; }
+      function czy(v){ return cpad2.top + cPH - (v+Z_RANGE)/(2*Z_RANGE)*cPH; }
+
+      corrSvg.appendChild(el('rect',{x:cpad2.left,y:cpad2.top,width:cPW,height:cPH,fill:'none',stroke:'var(--line-b)','stroke-width':1}));
+      var axLabelX = el('text',{x:cW/2,y:cH-8,'text-anchor':'middle','font-size':11,'font-family':'IBM Plex Sans KR, sans-serif',fill:'var(--ink-soft)'});
+      axLabelX.textContent='속성 A';
+      corrSvg.appendChild(axLabelX);
+      var axLabelY = el('text',{x:14,y:cpad2.top+10,'font-size':11,'font-family':'IBM Plex Sans KR, sans-serif',fill:'var(--ink-soft)'});
+      axLabelY.textContent='속성 B';
+      corrSvg.appendChild(axLabelY);
+
+      var corrPtsLayer = el('g',{});
+      corrSvg.appendChild(corrPtsLayer);
+      for(i=0;i<N_PTS;i++){
+        corrPtsLayer.appendChild(el('circle',{r:4, fill:'var(--accent)', 'fill-opacity':0.65}));
+      }
+      var corrPtsCircles = corrPtsLayer.querySelectorAll('circle');
+
+      var corrRInput = document.getElementById('corrR');
+      function renderCorr(){
+        var r = parseFloat(corrRInput.value);
+        document.getElementById('corrVal').textContent = (r>=0?'+':'')+r.toFixed(2);
+        var s = Math.sqrt(Math.max(0,1-r*r));
+        for(var k=0;k<N_PTS;k++){
+          var x = cz1[k];
+          var y = r*cz1[k] + s*cz2[k];
+          corrPtsCircles[k].setAttribute('cx', czx(x));
+          corrPtsCircles[k].setAttribute('cy', czy(y));
+        }
+      }
+      corrRInput.addEventListener('input', renderCorr);
+      window.setCorr = function(r){ corrRInput.value = r; renderCorr(); };
+      renderCorr();
+    }
+
+    var exSvg = document.getElementById('exPlot');
+    if(exSvg){
+      var bmiData = [
+        {x:2008,y:22.8},{x:2009,y:21.7},{x:2010,y:21.5},{x:2011,y:21.4},{x:2012,y:22.0},
+        {x:2013,y:23.1},{x:2014,y:23.8},{x:2015,y:25.4},{x:2016,y:28.3},{x:2017,y:30.0},
+        {x:2018,y:31.0},{x:2019,y:31.4},{x:2020,y:32.5},{x:2021,y:34.6},{x:2022,y:34.5},
+        {x:2023,y:33.9},{x:2024,y:34.3},{x:2025,y:34.5}
+      ];
+      var exXDomain=[2006,2032], exYDomain=[15,45];
+      var expad={left:40,right:14,top:14,bottom:34};
+      var exVbW=460, exVbH=320;
+      var exPW = exVbW-expad.left-expad.right, exPH = exVbH-expad.top-expad.bottom;
+      function exsx(x){ return expad.left + (x-exXDomain[0])/(exXDomain[1]-exXDomain[0])*exPW; }
+      function exsy(y){ return expad.top + exPH - (y-exYDomain[0])/(exYDomain[1]-exYDomain[0])*exPH; }
+
+      var exAxes = el('g',{});
+      [15,20,25,30,35,40,45].forEach(function(t){
+        exAxes.appendChild(el('line',{x1:expad.left,x2:exVbW-expad.right,y1:exsy(t),y2:exsy(t),stroke:'var(--grid-line)','stroke-width':1}));
+        var lbl = el('text',{x:expad.left-8,y:exsy(t)+4,'text-anchor':'end','font-size':9,'font-family':'IBM Plex Mono, monospace',fill:'var(--ink-faint)'});
+        lbl.textContent = t;
+        exAxes.appendChild(lbl);
+      });
+      [2008,2013,2018,2023,2028].forEach(function(t){
+        var lbl = el('text',{x:exsx(t),y:exVbH-expad.bottom+16,'text-anchor':'middle','font-size':9,'font-family':'IBM Plex Mono, monospace',fill:'var(--ink-faint)'});
+        lbl.textContent = t;
+        exAxes.appendChild(lbl);
+      });
+      exSvg.appendChild(exAxes);
+
+      var exDataLayer = el('g',{});
+      bmiData.forEach(function(p){
+        exDataLayer.appendChild(el('circle',{cx:exsx(p.x), cy:exsy(p.y), r:4.5, fill:'var(--ink)', 'fill-opacity':0.75}));
+      });
+      exSvg.appendChild(exDataLayer);
+      var exDataCircles = exDataLayer.querySelectorAll('circle');
+
+      var exLineLayer = el('g',{});
+      exSvg.appendChild(exLineLayer);
+      var exMarkLayer = el('g',{});
+      exSvg.appendChild(exMarkLayer);
+
+      function exOls(pts){
+        var n=pts.length, sx_=0, sy_=0;
+        pts.forEach(function(p){ sx_+=p.x; sy_+=p.y; });
+        var mx=sx_/n, my=sy_/n;
+        var num=0, den=0;
+        pts.forEach(function(p){ num += (p.x-mx)*(p.y-my); den += (p.x-mx)*(p.x-mx); });
+        return {a: num/den, b: my - (num/den)*mx, n:n};
+      }
+
+      var TARGET_YEAR = 2030;
+      function renderEx(startYear){
+        var windowPts = bmiData.filter(function(p){ return p.x >= startYear; });
+        var r = exOls(windowPts);
+
+        bmiData.forEach(function(p, idx){
+          exDataCircles[idx].setAttribute('fill', p.x>=startYear ? 'var(--ink)' : 'var(--ink-faint)');
+          exDataCircles[idx].setAttribute('fill-opacity', p.x>=startYear ? 0.8 : 0.35);
+        });
+
+        while(exLineLayer.firstChild) exLineLayer.removeChild(exLineLayer.firstChild);
+        while(exMarkLayer.firstChild) exMarkLayer.removeChild(exMarkLayer.firstChild);
+
+        var y0 = r.a*exXDomain[0]+r.b, y1v = r.a*exXDomain[1]+r.b;
+        var clip = liangBarsky(exXDomain[0],y0,exXDomain[1],y1v, exXDomain[0],exYDomain[0],exXDomain[1],exYDomain[1]);
+        if(clip){
+          exLineLayer.appendChild(el('line',{
+            x1:exsx(clip[0]), y1:exsy(clip[1]), x2:exsx(clip[2]), y2:exsy(clip[3]),
+            stroke:'var(--accent-warm)', 'stroke-width':2.5, 'stroke-linecap':'round'
+          }));
+        }
+
+        var predY = r.a*TARGET_YEAR + r.b;
+        var clampedPredY = Math.max(exYDomain[0], Math.min(exYDomain[1], predY));
+        exMarkLayer.appendChild(el('circle',{cx:exsx(TARGET_YEAR), cy:exsy(clampedPredY), r:6, fill:'var(--surface)', stroke:'var(--accent-warm)', 'stroke-width':2.5}));
+        var lbl = el('text',{x:exsx(TARGET_YEAR)-8, y:exsy(clampedPredY)-10, 'text-anchor':'end', 'font-size':11, 'font-family':'IBM Plex Mono, monospace', fill:'var(--accent-warm)', 'font-weight':600});
+        lbl.textContent = TARGET_YEAR+' → '+predY.toFixed(1)+'%';
+        exMarkLayer.appendChild(lbl);
+
+        document.getElementById('exEqA').textContent = r.a.toFixed(3);
+        var bStr = (r.b>=0 ? '+ ' : '− ') + Math.abs(r.b).toFixed(1);
+        document.getElementById('exEqB').textContent = bStr;
+        document.getElementById('exN').textContent = startYear+'~2025 ('+r.n+'개)';
+        document.getElementById('exPred').textContent = predY.toFixed(1)+'%';
+      }
+
+      window.setExWindow = function(startYear, btnId){
+        ['exBtnFull','exBtn10','exBtn5'].forEach(function(id){ document.getElementById(id).classList.remove('active'); });
+        document.getElementById(btnId).classList.add('active');
+        renderEx(startYear);
+      };
+      renderEx(2008);
+    }
   })();
 })();
 </script>
