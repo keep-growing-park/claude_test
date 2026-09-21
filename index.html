@@ -205,8 +205,6 @@
   }
   .lab-grid{ display:grid; grid-template-columns: 1.15fr 1fr; gap:24px; align-items:start; }
   @media (max-width:720px){ .lab-grid{ grid-template-columns:1fr; } }
-  figure{ margin:0 0 22px; }
-  figcaption{ font-size:12.5px; color:var(--ink-faint); margin-top:8px; }
   .lab svg{ width:100%; height:auto; display:block; }
   .presets{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
   .btn{
@@ -390,28 +388,7 @@
       <div class="bubble me">화수가 더 많으니까 오늘이 어제보다는 오래 걸리지 않을까?</div>
     </div>
 
-    <p>친구는 <b>화수</b>가 늘어나면 <b>정주행 시간</b>도 늘어날 것이라 예측했습니다. 그런데 이 예측, 얼마나 믿을 만할까요? 두 속성이 정말 함께 움직이는지, 그 관계가 얼마나 강한지부터 확인해 봅시다.</p>
-
-    <h3 style="font-size:16px;">상관계수 — 관계의 강도를 숫자로</h3>
-    <p>두 속성이 함께 움직이는 정도를 −1부터 +1 사이의 숫자로 나타낸 것을 <b>상관계수(r)</b>라고 합니다. 부호는 방향을(둘 다 늘어나면 양수, 하나가 늘 때 다른 하나가 줄면 음수), 절댓값은 강도를 나타냅니다. 1에 가까울수록 점들이 하나의 직선에 바짝 붙어 늘어섭니다. 슬라이더로 r을 직접 바꿔 보세요.</p>
-
-    <figure class="interactive">
-      <div class="lab" style="margin-block:12px;">
-        <svg id="corrPlot" viewBox="0 0 460 300" role="img" aria-label="상관계수 r에 따라 산점도의 모양이 달라지는 그래프"></svg>
-        <div class="slider-row" style="margin-top:12px;">
-          <div class="row-top"><b>상관계수 r</b><span class="val" id="corrVal">+0.70</span></div>
-          <input type="range" id="corrR" min="-1" max="1" step="0.05" value="0.7">
-        </div>
-        <div class="presets">
-          <button class="btn" onclick="setCorr(0.9)">강한 양의 상관</button>
-          <button class="btn" onclick="setCorr(0)">상관관계 거의 없음</button>
-          <button class="btn" onclick="setCorr(-0.9)">강한 음의 상관</button>
-        </div>
-      </div>
-      <figcaption>속성 A와 속성 B, 두 값 사이의 관계를 나타낸 가상의 산점도입니다. r이 ±1에 가까워질수록 점들이 직선 모양으로 모입니다.</figcaption>
-    </figure>
-
-    <p>상관계수는 관계의 방향과 세기만 알려 줄 뿐, 그 관계를 구체적인 식으로 표현해 주지는 않습니다. 이 관계를 하나의 직선으로 정확하게 나타내는 방법이 바로 지금부터 배울 <b>선형 회귀</b>이고, 교과서는 다음과 같이 정의합니다.</p>
+    <p>친구는 <b>화수</b>가 늘어나면 <b>정주행 시간</b>도 늘어날 것이라 예측했습니다. 이렇게 두 속성 사이에 <b>선 모양의 관계</b>가 있다고 가정하고, 데이터를 가장 잘 대표하는 선을 찾는 분석 방법을 교과서는 다음과 같이 정의합니다.</p>
 
     <div class="tbquote">
       <div class="h"><span>📖 교과서 원문</span><span class="src">『데이터 과학』 119쪽</span></div>
@@ -1183,54 +1160,6 @@ plotly</pre>
   })();
 
   (function(){
-    var corrSvg = document.getElementById('corrPlot');
-    if(corrSvg){
-      var N_PTS = 50;
-      var cz1 = [], cz2 = [];
-      function randn(){
-        var u = Math.random() || 1e-9, v = Math.random();
-        return Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v);
-      }
-      for(var i=0;i<N_PTS;i++){ cz1.push(randn()); cz2.push(randn()); }
-
-      var cW=460, cH=300, cpad2={left:30,right:30,top:20,bottom:40};
-      var cPW = cW-cpad2.left-cpad2.right, cPH = cH-cpad2.top-cpad2.bottom;
-      var Z_RANGE = 3.2;
-      function czx(v){ return cpad2.left + (v+Z_RANGE)/(2*Z_RANGE)*cPW; }
-      function czy(v){ return cpad2.top + cPH - (v+Z_RANGE)/(2*Z_RANGE)*cPH; }
-
-      corrSvg.appendChild(el('rect',{x:cpad2.left,y:cpad2.top,width:cPW,height:cPH,fill:'none',stroke:'var(--line-b)','stroke-width':1}));
-      var axLabelX = el('text',{x:cW/2,y:cH-8,'text-anchor':'middle','font-size':11,'font-family':'IBM Plex Sans KR, sans-serif',fill:'var(--ink-soft)'});
-      axLabelX.textContent='속성 A';
-      corrSvg.appendChild(axLabelX);
-      var axLabelY = el('text',{x:14,y:cpad2.top+10,'font-size':11,'font-family':'IBM Plex Sans KR, sans-serif',fill:'var(--ink-soft)'});
-      axLabelY.textContent='속성 B';
-      corrSvg.appendChild(axLabelY);
-
-      var corrPtsLayer = el('g',{});
-      corrSvg.appendChild(corrPtsLayer);
-      for(i=0;i<N_PTS;i++){
-        corrPtsLayer.appendChild(el('circle',{r:4, fill:'var(--accent)', 'fill-opacity':0.65}));
-      }
-      var corrPtsCircles = corrPtsLayer.querySelectorAll('circle');
-
-      var corrRInput = document.getElementById('corrR');
-      function renderCorr(){
-        var r = parseFloat(corrRInput.value);
-        document.getElementById('corrVal').textContent = (r>=0?'+':'')+r.toFixed(2);
-        var s = Math.sqrt(Math.max(0,1-r*r));
-        for(var k=0;k<N_PTS;k++){
-          var x = cz1[k];
-          var y = r*cz1[k] + s*cz2[k];
-          corrPtsCircles[k].setAttribute('cx', czx(x));
-          corrPtsCircles[k].setAttribute('cy', czy(y));
-        }
-      }
-      corrRInput.addEventListener('input', renderCorr);
-      window.setCorr = function(r){ corrRInput.value = r; renderCorr(); };
-      renderCorr();
-    }
-
     var exSvg = document.getElementById('exPlot');
     if(exSvg){
       var bmiData = [
