@@ -364,7 +364,7 @@
     <div class="goalbox">
       <span class="lbl">학습 목표</span>
       <ul>
-        <li>회귀 모델의 개념을 설명하고, 선형 회귀 분석을 수행할 수 있다.</li>
+        <li>회귀 모델이 무엇인지 스스로 설명하고, 선형 회귀 분석을 직접 수행할 수 있다.</li>
         <li>통계적 회귀 모델과 기계학습 기반 회귀 모델의 차이를 이해하고 상황에 맞게 적용할 수 있다.</li>
       </ul>
       <div class="kw-row">
@@ -394,7 +394,7 @@
       <p>"선형 회귀는 두 가지 이상의 속성 사이에 선 모양의 관계가 있다고 가정하고 데이터를 가장 잘 대표하는 선을 찾는 분석 방법이다."</p>
     </div>
 
-    <p>이때 예측하려는 값(정주행 시간)을 <b>종속 변수</b>, 예측에 사용하는 값(화수)을 <b>독립 변수</b>라고 하며, 이 둘의 관계를 가장 잘 나타내는 선을 <b>회귀선</b>이라 부릅니다. 독립 변수가 하나뿐인 선형 회귀는 <b>단순 선형 회귀</b>라고 합니다.</p>
+    <p>여기서 우리가 맞히고 싶은 값(정주행 시간)이 <b>종속 변수</b>이고, 맞히는 데 참고하는 값(화수)이 <b>독립 변수</b>입니다. 이 둘을 가장 잘 이어 주는 선을 <b>회귀선</b>이라고 부르고, 독립 변수를 하나만 쓰는 경우를 <b>단순 선형 회귀</b>라고 합니다.</p>
 
     <div class="formula-card">
       <div class="formula-big">
@@ -403,18 +403,18 @@
       <div class="formula-legend">
         <div class="flegend-item">
           <span class="flegend-swatch" style="background:var(--accent-warm)"></span>
-          <div><strong>a — 가중치 (기울기)</strong><span>x가 1 커질 때 y가 얼마나 커지는지, 즉 독립 변수가 종속 변수에 미치는 영향력의 크기입니다.</span></div>
+          <div><strong>a — 가중치 (기울기)</strong><span>x가 1 늘어날 때마다 y가 얼마씩 달라지는지를 나타내는 숫자로, 두 값이 얼마나 밀접하게 붙어 움직이는지를 보여줍니다.</span></div>
         </div>
         <div class="flegend-item">
           <span class="flegend-swatch" style="background:var(--accent)"></span>
-          <div><strong>b — 편향 (절편)</strong><span>x가 0일 때 y의 값. 독립 변수와 무관하게 항상 더해지는 값입니다.</span></div>
+          <div><strong>b — 편향 (절편)</strong><span>x를 전혀 반영하지 않았을 때, 즉 x=0일 때 남는 기본값입니다. x가 무엇이든 매번 똑같이 얹히는 부분이라고 생각하면 됩니다.</span></div>
         </div>
       </div>
       <p style="margin:0; font-size:13.5px; color:var(--ink-soft); text-align:center;">a와 b처럼 회귀 모델에서 구하고자 하는 값을 <b>회귀 계수</b>라고 합니다. 최적의 a, b를 구하면 회귀선이 완성됩니다.</p>
     </div>
 
     <div class="aside">
-      <strong>‘회귀’라는 용어의 유래.</strong> 프랜시스 골턴(Francis Galton)은 부모와 자식의 키 사이 관계를 연구하며 ‘회귀’라는 말을 처음 사용했습니다. 부모의 키가 아무리 크거나 작아도, 자녀의 키는 그 세대의 평균값으로 돌아가려는 경향을 보였기 때문입니다.
+      <strong>‘회귀’라는 용어의 유래.</strong> 영국의 통계학자 프랜시스 골턴(Francis Galton)이 바로 이 이름을 붙인 사람입니다. 그는 여러 세대에 걸쳐 부모와 자녀의 키를 비교하다가 재미있는 패턴을 발견했는데, 키가 유난히 크거나 작은 부모에게서 태어난 아이일수록 오히려 평균 키에 더 가깝게 태어나더라는 것이었습니다. 이렇게 극단적인 값이 평균 쪽으로 '되돌아가는' 모습에서 회귀라는 이름이 나왔습니다.
     </div>
 
     <details class="card">
@@ -473,7 +473,7 @@
       <div class="h"><span>📖 교과서 원문</span><span class="src">『데이터 과학』 120쪽</span></div>
       <p>"오차 제곱의 총합 = (실젯값1 − 예측값1)² + (실젯값2 − 예측값2)² + ... + (실젯값n − 예측값n)²"</p>
     </div>
-    <p class="lead" style="font-size:13.5px;">💡 실젯값과 예측값의 차이를 <b>오차</b>라고 합니다. 오차를 그냥 더하면 양수·음수가 서로 상쇄되어 버리므로, <b>제곱</b>하거나 <b>절댓값</b>을 취해 비교합니다. 오차 제곱의 총합이 작을수록 더 좋은 회귀선입니다.</p>
+    <p class="lead" style="font-size:13.5px;">💡 실제 값과 모델이 내놓은 값이 벌어진 정도를 <b>오차</b>라고 부릅니다. 이 오차를 그냥 다 더하면 양수와 음수가 서로를 지워 버리기 때문에, <b>제곱</b>하거나 <b>절댓값</b>으로 바꿔서 비교해야 합니다. 그렇게 구한 합이 작을수록 더 믿을 만한 회귀선입니다.</p>
   </section>
 
   <section id="models">
@@ -485,7 +485,7 @@
       <div class="model-card stat">
         <span class="tag">통계적 회귀 모델</span>
         <h3>수식을 풀어 한 번에 계산</h3>
-        <p>오차 제곱의 총합을 최소로 만드는 a, b를 수학적으로 계산합니다. 독립 변수가 하나인 경우 다음 공식으로 바로 구할 수 있습니다.</p>
+        <p>오차를 나타내는 식을 세운 뒤, 그 식을 풀어 곧바로 정답을 얻어냅니다. 독립 변수가 하나뿐이라면 아래 공식 하나로 계산이 끝납니다.</p>
         <div class="formula-card" style="padding:14px; margin:6px 0 0;">
           <div style="font-family:var(--mono); font-size:13px; text-align:center; line-height:2;">
             a = Σ(x−x̄)(y−ȳ) / Σ(x−x̄)²<br>
@@ -505,7 +505,7 @@
           <text x="120" y="102" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink-faint)">회귀 계수 →</text>
           <text x="8" y="14" font-family="IBM Plex Mono, monospace" font-size="9" fill="var(--ink-faint)">MSE</text>
         </svg>
-        <p style="font-size:12.5px; color:var(--ink-faint);">평균제곱오차(MSE)가 최소가 되는 지점을 향해 항아리 모양의 그래프를 따라 내려갑니다. (124~125쪽)</p>
+        <p style="font-size:12.5px; color:var(--ink-faint);">회귀 계수를 바꿔가며 평균제곱오차를 그래프로 그리면 U자 모양이 나타나는데, 그 바닥을 향해 한 걸음씩 내려가는 셈입니다. (124~125쪽)</p>
       </div>
     </div>
 
@@ -705,8 +705,8 @@ plotly</pre>
     <div class="kicker">05 · 정리</div>
     <h2>핵심 정리</h2>
     <div class="summary-list">
-      <div class="summary-item"><span class="n">01</span><p>선형 회귀는 <b>y = ax + b</b> 형태로 데이터를 가장 잘 대표하는 회귀선을 찾는 분석 방법이며, 독립 변수가 하나면 <b>단순 선형 회귀</b>라고 한다.</p></div>
-      <div class="summary-item"><span class="n">02</span><p>실젯값과 예측값의 차이인 <b>오차</b>를 제곱해 합한 값이 작을수록 더 좋은 회귀선이다.</p></div>
+      <div class="summary-item"><span class="n">01</span><p>선형 회귀는 <b>y = ax + b</b>라는 식으로 데이터의 흐름을 가장 잘 담아내는 선을 찾는 방법이며, 독립 변수를 하나만 쓰면 <b>단순 선형 회귀</b>라고 한다.</p></div>
+      <div class="summary-item"><span class="n">02</span><p>실제 값과 모델의 예측이 벌어진 정도인 <b>오차</b>를 제곱해 합한 값이 작을수록 더 믿을 만한 회귀선이다.</p></div>
       <div class="summary-item"><span class="n">03</span><p><b>통계적 회귀 모델</b>은 수식을 풀어 회귀 계수를 한 번에 계산하고, <b>기계학습 기반 회귀 모델</b>은 <b>경사 하강법</b>으로 계수를 조금씩 보정해 최적값에 접근한다.</p></div>
     </div>
 
