@@ -615,89 +615,95 @@
 
   <section id="vibe">
     <div class="kicker">04 · 바이브 코딩 실습</div>
-    <h2>내가 만든 회귀선 실험 도구, 앱으로 만들기</h2>
-    <p class="lead">위에서 슬라이더로 직접 해 본 실험을 이번에는 AI에게 프롬프트로 부탁해 <b>스트림릿(Streamlit) 앱</b>으로 직접 만들어 봅니다. 코드를 한 줄씩 타이핑하는 대신, 무엇을 원하는지 정확하고 구체적으로 요청하는 연습을 합니다.</p>
+    <h2>진짜 데이터로, 앱 하나 만들기</h2>
+    <p class="lead">이번에는 실제 통계 데이터를 가지고 AI에게 프롬프트로 부탁해 <b>스트림릿(Streamlit) 앱</b>을 직접 만들어 봅니다. 코드를 한 줄씩 타이핑하는 대신, 무엇을 원하는지 정확하고 구체적으로 요청하는 연습을 합니다.</p>
+
+    <div class="aside">
+      <strong>오늘 쓰는 데이터.</strong> 2008년부터 2025년까지 <b>병역판정검사</b>를 받은 사람들의 <b>과체중·비만 비율</b> 통계입니다(<code class="num">dataset/military_service_bmi.csv</code>). 여러분이 몇 년 뒤 직접 받게 될 검사와 같은 종류의 자료라, 회귀 분석으로 몇 년 뒤 수치를 예측해 보기에 딱 맞습니다.
+    </div>
 
     <ol class="steps">
       <li><span class="st">① 샘플 프롬프트 — 그대로 붙여 넣기</span>
         <div class="code-block">
           <div class="code-head">① AI에게 보낼 프롬프트</div>
-          <pre>"정주행 시간 회귀선 실험실"이라는 스트림릿 앱을 파일 하나로 만들어 줘.
-웹소설 화수(x)와 정주행 시간(y) 데이터 5개를 코드 안에 직접 넣어 써:
-(20,70), (35,120), (50,165), (65,210), (80,255)
+          <pre>"병역판정검사 체중 추이 예측기"라는 스트림릿 앱을 파일 하나로 만들어 줘.
+아래 주소의 CSV 파일을 읽어서 사용해:
+https://raw.githubusercontent.com/keep-growing-park/claude_test/claude/lucid-cori-cpsr83/dataset/military_service_bmi.csv
+이 파일의 열 이름은 연도, 과체중_25.0_29.9_비율(%), 비만_30.0이상_비율(%),
+과체중+비만_합계(%)이고, 인코딩은 UTF-8이야.
 
-화면에 슬라이더 두 개를 만들어서 가중치 a(0~5)와 편향 b(0~150)를
-사용자가 바꿀 수 있게 해 줘.
-산점도 위에 사용자가 정한 a, b로 그린 직선을 함께 그려서 보여 줘.
-각 점의 실젯값과 예측값의 차이를 제곱해서 더한 값(오차 제곱합)을
-화면에 크게 보여 줘.
+연도(x)와 과체중+비만_합계(%)(y)의 산점도를 그리고,
+그 데이터에 가장 잘 맞는 회귀 직선을 함께 그려 줘. 그래프는 plotly로.
+학습에 사용한 연도의 시작과 끝, 그리고 이 직선이 데이터를
+얼마나 잘 설명하는지 나타내는 결정계수도 화면에 적어 줘.
 
-이 데이터에 가장 잘 맞는 a, b 값도 계산해서
-사용자가 고른 값의 오차 제곱합과 나란히 비교해서 보여 줘.
+연도를 슬라이더로 고르면(2008년부터 2035년까지) 그 해의
+예상 비율이 크게 표시되게 해 줘.
 
 필요한 라이브러리 목록도 파일로 따로 줘. 버전 숫자는 빼고 이름만.</pre>
         </div>
         <details class="card">
           <summary>선생님 확인용 예시 코드</summary>
           <div class="card-body">
-            <p><span class="num">main.py</span>와 <span class="num">requirements.txt</span>, 두 파일로 저장합니다. 인터넷에서 데이터를 내려받지 않는 자체완결형 앱이라 어떤 환경에서도 바로 실행됩니다.</p>
+            <p><span class="num">main.py</span>와 <span class="num">requirements.txt</span>, 두 파일로 저장합니다.</p>
             <div class="code-block">
               <div class="code-head">main.py</div>
               <pre><span class="tok-kw">import</span> streamlit <span class="tok-kw">as</span> st
+<span class="tok-kw">import</span> pandas <span class="tok-kw">as</span> pd
 <span class="tok-kw">import</span> numpy <span class="tok-kw">as</span> np
 <span class="tok-kw">import</span> plotly.express <span class="tok-kw">as</span> px
-<span class="tok-kw">import</span> pandas <span class="tok-kw">as</span> pd
 
-st.title(<span class="tok-str">"정주행 시간 회귀선 실험실"</span>)
+DATA_URL = <span class="tok-str">"https://raw.githubusercontent.com/keep-growing-park/claude_test/claude/lucid-cori-cpsr83/dataset/military_service_bmi.csv"</span>
 
-x = np.array([<span class="tok-cls">20</span>, <span class="tok-cls">35</span>, <span class="tok-cls">50</span>, <span class="tok-cls">65</span>, <span class="tok-cls">80</span>])
-y = np.array([<span class="tok-cls">70</span>, <span class="tok-cls">120</span>, <span class="tok-cls">165</span>, <span class="tok-cls">210</span>, <span class="tok-cls">255</span>])
+st.title(<span class="tok-str">"병역판정검사 체중 추이 예측기"</span>)
 
-a = st.slider(<span class="tok-str">"가중치 a"</span>, <span class="tok-cls">0.0</span>, <span class="tok-cls">5.0</span>, <span class="tok-cls">1.5</span>, <span class="tok-cls">0.01</span>)
-b = st.slider(<span class="tok-str">"편향 b"</span>, <span class="tok-cls">0</span>, <span class="tok-cls">150</span>, <span class="tok-cls">100</span>)
+df = pd.read_csv(DATA_URL)
+col = <span class="tok-str">"과체중+비만_합계(%)"</span>
 
-pred = a * x + b
-sse = float(np.<span class="tok-fn">sum</span>((y - pred) ** <span class="tok-cls">2</span>))
+a, b = np.<span class="tok-fn">polyfit</span>(df[<span class="tok-str">"연도"</span>], df[col], <span class="tok-cls">1</span>)
+pred = a * df[<span class="tok-str">"연도"</span>] + b
+ss_res = <span class="tok-fn">float</span>(((df[col] - pred) ** <span class="tok-cls">2</span>).<span class="tok-fn">sum</span>())
+ss_tot = <span class="tok-fn">float</span>(((df[col] - df[col].mean()) ** <span class="tok-cls">2</span>).<span class="tok-fn">sum</span>())
+r2 = <span class="tok-cls">1</span> - ss_res / ss_tot
 
-df = pd.DataFrame({<span class="tok-str">"화수"</span>: x, <span class="tok-str">"정주행 시간"</span>: y})
-fig = px.scatter(df, x=<span class="tok-str">"화수"</span>, y=<span class="tok-str">"정주행 시간"</span>)
-fig.add_scatter(x=x, y=pred, mode=<span class="tok-str">"lines"</span>, name=<span class="tok-str">"내 회귀선"</span>)
+fig = px.scatter(df, x=<span class="tok-str">"연도"</span>, y=col)
+fig.add_scatter(x=df[<span class="tok-str">"연도"</span>], y=pred, mode=<span class="tok-str">"lines"</span>, name=<span class="tok-str">"회귀 직선"</span>)
 st.plotly_chart(fig, width=<span class="tok-str">"stretch"</span>)
+st.caption(f<span class="tok-str">"학습에 사용한 연도: {df['연도'].min()}~{df['연도'].max()}년 · 결정계수 R² = {r2:.3f}"</span>)
 
-st.metric(<span class="tok-str">"오차 제곱합 (내 직선)"</span>, f<span class="tok-str">"{sse:.1f}"</span>)
-
-a_best, b_best = np.<span class="tok-fn">polyfit</span>(x, y, <span class="tok-cls">1</span>)
-sse_best = float(np.<span class="tok-fn">sum</span>((y - (a_best * x + b_best)) ** <span class="tok-cls">2</span>))
-st.metric(<span class="tok-str">"오차 제곱합 (통계적으로 가장 잘 맞는 직선)"</span>, f<span class="tok-str">"{sse_best:.1f}"</span>)
-st.caption(f<span class="tok-str">"최적의 회귀선: y = {a_best:.2f}x + {b_best:.1f}"</span>)</pre>
+year = st.slider(<span class="tok-str">"연도를 고르세요"</span>, <span class="tok-cls">2008</span>, <span class="tok-cls">2035</span>, <span class="tok-cls">2026</span>)
+st.metric(f<span class="tok-str">"{year}년 예상 과체중+비만 비율"</span>, f<span class="tok-str">"{a * year + b:.1f}%"</span>)
+<span class="tok-kw">if</span> year &gt; df[<span class="tok-str">"연도"</span>].max():
+    st.info(<span class="tok-str">"학습 범위 밖의 외삽값입니다. 실제 미래 수치를 보장하지 않습니다."</span>)</pre>
             </div>
             <div class="code-block">
               <div class="code-head">requirements.txt</div>
               <pre>streamlit
-numpy
 pandas
+numpy
 plotly</pre>
             </div>
           </div>
         </details>
       </li>
       <li><span class="st">② AI가 준 코드 — 실행하고 직선을 읽는다</span>
-        받은 코드를 <span class="num">main.py</span> 파일 하나로 저장해 실행합니다. 슬라이더를 움직여 오차 제곱합이 얼마나 작아질 수 있는지 직접 찾아본 다음, "통계적으로 가장 잘 맞는 직선"의 오차 제곱합과 비교해 봅니다. 내가 눈으로 찾은 값이 그 값에 얼마나 가까운지 확인합니다.
+        받은 코드를 <span class="num">main.py</span> 파일 하나로 저장해 실행합니다. 산점도 위에 회귀 직선이 잘 그어졌는지 먼저 확인한 다음, 슬라이더를 2026년, 2030년으로 옮겨 보면서 예상 비율이 어떻게 달라지는지 살펴봅니다.
       </li>
-      <li><span class="st">③ 개선 프롬프트 — 교과서 속 두 회귀선과 비교하기</span>
+      <li><span class="st">③ 개선 프롬프트 — 다른 지표와 함께 비교하기</span>
         <div class="code-block">
           <div class="code-head">③ 개선 프롬프트</div>
-          <pre>버튼 두 개를 추가해 줘. 하나는 눌렀을 때 a=1.5, b=100으로,
-다른 하나는 a=2.5, b=50으로 슬라이더 값이 바로 바뀌게 해 줘.
-두 경우의 오차 제곱합을 각각 계산해서 어느 쪽이 더 작은지,
-그래서 어느 직선이 더 좋은 예측 모델인지 문장으로 알려 줘.</pre>
+          <pre>과체중 비율과 비만 비율도 각각 따로 회귀 직선을 구해서,
+세 개의 회귀 직선(과체중, 비만, 과체중+비만 합계)을
+한 그래프에 겹쳐서 보여 줘.
+세 지표 중 기울기가 가장 가파른, 즉 가장 빠르게 늘고 있는
+지표가 무엇인지 문장으로 알려 줘.</pre>
         </div>
-        <p style="font-size:13.5px; color:var(--ink-soft); margin-top:8px;">이 결과를 위쪽 <a href="#lab">실험</a> 절에서 직접 조절해 본 값과 비교해 보세요. 같은 결론에 도달하나요?</p>
+        <p style="font-size:13.5px; color:var(--ink-soft); margin-top:8px;">과체중 비율과 비만 비율 중 어느 쪽이 더 빠르게 늘고 있나요? 그 차이가 무엇을 뜻할지 짝과 이야기해 보세요.</p>
       </li>
     </ol>
 
     <div class="aside">
-      <strong>같은 답, 두 가지 방법.</strong> 앱 안의 "통계적으로 가장 잘 맞는 직선"은 수식을 한 번에 풀어 계산한 것이고(통계적 회귀 모델), 슬라이더로 값을 조금씩 바꿔가며 오차를 줄여 나간 것은 기계학습이 경사 하강법으로 하는 일을 손으로 흉내 낸 것입니다. 방식은 다르지만 결국 같은 결론, 즉 오차가 가장 작은 직선을 향해 갑니다.
+      <strong>⚠️ 범위 밖의 예측은 조심해서 읽습니다.</strong> 이 회귀선은 2008~2025년 자료로 만든 것입니다. 2030년, 2035년처럼 그 범위를 벗어난 해의 예측값(외삽)은 "지금까지의 추세가 앞으로도 그대로 이어진다"는 가정 위에 서 있을 뿐, 실제 미래를 보장하지 않습니다.
     </div>
   </section>
 
