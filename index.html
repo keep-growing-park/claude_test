@@ -85,22 +85,26 @@
   .hero h1{ font-size:clamp(28px,6vw,42px); line-height:1.2; }
   .hero p{ color:var(--ink-soft); font-size:16px; margin-top:14px; max-width:64ch; }
 
+  .units-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:20px; align-items:stretch; margin-block:20px; }
+  @media (max-width:860px){ .units-grid{ grid-template-columns:1fr; } }
+
   .unit{
     background:var(--surface); border:1px solid var(--line-b); border-radius:var(--radius);
-    box-shadow:var(--shadow); margin-block:20px; overflow:hidden;
+    box-shadow:var(--shadow); overflow:hidden;
+    display:flex; flex-direction:column;
   }
   .unit-head{
-    display:flex; align-items:baseline; gap:12px; padding:20px 24px;
+    display:flex; align-items:baseline; gap:12px; padding:18px 20px;
     border-bottom:1px solid var(--line-b);
   }
   .unit-num{ font-family:var(--mono); color:var(--accent); font-weight:700; font-size:14px; flex:none; }
-  .unit-head h2{ font-size:20px; }
-  .unit-desc{ padding:14px 24px 0; color:var(--ink-soft); font-size:14px; }
+  .unit-head h2{ font-size:18px; }
+  .unit-desc{ padding:14px 20px 0; color:var(--ink-soft); font-size:13.5px; }
 
   .topics{ display:grid; gap:1px; background:var(--line-b); margin-top:16px; }
   .topic{
-    display:flex; align-items:center; justify-content:space-between; gap:12px;
-    background:var(--surface); padding:16px 24px; text-decoration:none; color:var(--ink);
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+    background:var(--surface); padding:14px 20px; text-decoration:none; color:var(--ink);
     transition:background .15s;
   }
   a.topic:hover{ background:var(--surface-2); }
@@ -126,6 +130,7 @@
     <p>고등학교 2학년 데이터 과학 수업용 온라인 콘텐츠 목차입니다. 단원을 고르고, 그 아래 세부 주제를 눌러 해당 학습 페이지로 이동하세요. (Ⅲ-1. 데이터 모델과 모델링은 학습지·교과서로 진행하며, 이 사이트에는 없습니다.)</p>
   </div>
 
+  <div class="units-grid">
   <div class="unit">
     <div class="unit-head"><span class="unit-num">02</span><h2>회귀 분석</h2></div>
     <p class="unit-desc">수치형 값을 예측하는 회귀 모델을 배우고, 통계적 방법과 기계학습 방법을 비교합니다.</p>
@@ -181,6 +186,7 @@
         <span class="t-badge">준비 중</span>
       </div>
     </div>
+  </div>
   </div>
 
   <footer>고등학교 2학년 데이터 과학 「Ⅲ. 데이터 모델링과 평가」 온라인 콘텐츠</footer>
